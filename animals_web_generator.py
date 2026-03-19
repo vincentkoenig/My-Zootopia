@@ -1,29 +1,42 @@
 import json
 
+
+# JSON-Datei laden
 def load_data(file_path):
-  """ Loads a JSON file """
-  with open(file_path, "r") as handle:
-    return json.load(handle)
+    with open(file_path, "r") as handle:
+        return json.load(handle)
+
 
 animals_data = load_data('animals_data.json')
 
-def show_animals():
-    for animal in animals_data:
-        name = animal.get("name")
-        if name:
-            print(f"Name: {name}")
+# Template laden
+with open('animals_template.html', 'r') as f:
+    template = f.read()
 
-        diet = animal.get("characteristics", {}).get("diet")
-        if diet:
-            print(f"Diet: {diet}")
+# String mit Tierdaten erzeugen
+animals_info = ""
+for animal in animals_data:
+    name = animal.get("name")
+    diet = animal.get("characteristics", {}).get("diet")
+    locations = animal.get("locations", [])
+    type_ = animal.get("characteristics", {}).get("type")
 
-        locations = animal.get("locations", [])
-        if locations:
-            print(f"Location: {locations[0]}")
+    if name:
+        animals_info += f"Name: {name}\n"
+    if diet:
+        animals_info += f"Diet: {diet}\n"
+    if locations:
+        animals_info += f"Location: {locations[0]}\n"
+    if type_:
+        animals_info += f"Type: {type_}\n"
 
-        type_ = animal.get("characteristics", {}).get("type")
-        if type_:
-            print(f"Type: {type_}")
+    animals_info += "\n"  # Leerzeile zwischen Tieren
 
-        print()
+# Platzhalter ersetzen
+output_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_info)
 
+# Neue HTML-Datei speichern
+with open('animals.html', 'w') as f:
+    f.write(output_html)
+
+print("animals.html wurde erstellt!")
