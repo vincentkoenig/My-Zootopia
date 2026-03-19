@@ -14,29 +14,32 @@ with open('animals_template.html', 'r') as f:
     template = f.read()
 
 # String mit Tierdaten erzeugen
-animals_info = ""
+output = ''
 for animal in animals_data:
+    output += '<li class="cards__item">'
     name = animal.get("name")
-    diet = animal.get("characteristics", {}).get("diet")
-    locations = animal.get("locations", [])
-    type_ = animal.get("characteristics", {}).get("type")
-
     if name:
-        animals_info += f"Name: {name}\n"
-    if diet:
-        animals_info += f"Diet: {diet}\n"
-    if locations:
-        animals_info += f"Location: {locations[0]}\n"
-    if type_:
-        animals_info += f"Type: {type_}\n"
+        output += f"Name: {name}<br/>\n"
 
-    animals_info += "\n"  # Leerzeile zwischen Tieren
+    diet = animal.get("characteristics", {}).get("diet")
+    if diet:
+        output += f"Diet: {diet}<br/>\n"
+
+    locations = animal.get("locations", [])
+    if locations:
+        output += f"Location: {locations[0]}<br/>\n"
+
+    type_ = animal.get("characteristics", {}).get("type")
+    if type_:
+        output += f"Type: {type_}<br/>\n"
+
+    output += '</li>\n'
 
 # Platzhalter ersetzen
-output_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_info)
+html_content = template.replace("__REPLACE_ANIMALS_INFO__", output)
 
 # Neue HTML-Datei speichern
-with open('animals.html', 'w') as f:
-    f.write(output_html)
+with open('animals.html', 'w') as file:
+    file.write(html_content)
 
 print("animals.html wurde erstellt!")
