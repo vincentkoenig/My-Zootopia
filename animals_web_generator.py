@@ -1,10 +1,19 @@
 import json
+import requests
+
+URL = "https://api.api-ninjas.com/v1/animals"
 
 
 def load_data(file_path):
     """Lädt JSON-Daten aus einer Datei."""
     with open(file_path, "r") as handle:
         return json.load(handle)
+
+
+def fetch_animals(animal_name):
+    params = {'name': animal_name}
+    response = requests.get(URL, params=params, headers={"X-Api-Key": "1BkH11YfdT5Zy3QbDkC2PyavS0bMC38rQ9PevUVv"})
+    return response.json()
 
 
 def serialize_animal(animal):
@@ -54,7 +63,7 @@ def generate_html(animals, template_file, output_file):
 
 
 def main():
-    animals_data = load_data("animals_data.json")
+    animals_data = fetch_animals("Fox")
     generate_html(animals_data, "animals_template.html", "animals.html")
 
 
