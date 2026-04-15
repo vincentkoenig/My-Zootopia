@@ -43,7 +43,7 @@ def serialize_animal(animal):
     return output
 
 
-def generate_html(animals, template_file, output_file):
+def generate_html(animals, template_file, output_file, animal_name):
     """Generiert die finale HTML-Datei basierend auf einer Vorlage."""
     # Vorlage lesen
     with open(template_file, "r") as f:
@@ -51,8 +51,11 @@ def generate_html(animals, template_file, output_file):
 
     # Tiere serialisieren
     animals_html = ''
-    for animal in animals:
-        animals_html += serialize_animal(animal)
+    if not animals:
+        animals_html = f"<h2>The animal '{animal_name}' doesn\'t exist.</h2>"
+    else:
+        for animal in animals:
+            animals_html += serialize_animal(animal)
 
     # Platzhalter ersetzen
     final_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_html)
@@ -65,7 +68,7 @@ def generate_html(animals, template_file, output_file):
 def main():
     animal_input = input("Enter a name of an animal: ")
     animals_data = fetch_animals(animal_input)
-    generate_html(animals_data, "animals_template.html", "animals.html")
+    generate_html(animals_data, "animals_template.html", "animals.html", animal_name=animal_input)
     print("Website was successfully generated to the file animals.html.")
 
 
