@@ -1,19 +1,4 @@
-import json
-import requests
-
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-api_key = os.environ.get("API_KEY")
-
-URL = "https://api.api-ninjas.com/v1/animals"
-
-
-def fetch_animals(animal_name):
-    params = {'name': animal_name}
-    response = requests.get(URL, params=params, headers={"X-Api-Key": api_key})
-    return response.json()
+import data_fetcher
 
 
 def serialize_animal(animal):
@@ -67,7 +52,7 @@ def generate_html(animals, template_file, output_file, animal_name):
 
 def main():
     animal_input = input("Enter a name of an animal: ")
-    animals_data = fetch_animals(animal_input)
+    animals_data = data_fetcher.fetch_data(animal_input)
     generate_html(animals_data, "animals_template.html", "animals.html", animal_name=animal_input)
     print("Website was successfully generated to the file animals.html.")
 
