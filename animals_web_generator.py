@@ -1,6 +1,12 @@
 import json
 import requests
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.environ.get("API_KEY")
+
 URL = "https://api.api-ninjas.com/v1/animals"
 
 
@@ -12,7 +18,7 @@ def load_data(file_path):
 
 def fetch_animals(animal_name):
     params = {'name': animal_name}
-    response = requests.get(URL, params=params, headers={"X-Api-Key": "1BkH11YfdT5Zy3QbDkC2PyavS0bMC38rQ9PevUVv"})
+    response = requests.get(URL, params=params, headers={"X-Api-Key": api_key})
     return response.json()
 
 
