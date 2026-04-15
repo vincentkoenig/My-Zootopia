@@ -10,12 +10,6 @@ api_key = os.environ.get("API_KEY")
 URL = "https://api.api-ninjas.com/v1/animals"
 
 
-def load_data(file_path):
-    """Lädt JSON-Daten aus einer Datei."""
-    with open(file_path, "r") as handle:
-        return json.load(handle)
-
-
 def fetch_animals(animal_name):
     params = {'name': animal_name}
     response = requests.get(URL, params=params, headers={"X-Api-Key": api_key})
@@ -69,8 +63,10 @@ def generate_html(animals, template_file, output_file):
 
 
 def main():
-    animals_data = fetch_animals("Fox")
+    animal_input = input("Enter a name of an animal: ")
+    animals_data = fetch_animals(animal_input)
     generate_html(animals_data, "animals_template.html", "animals.html")
+    print("Website was successfully generated to the file animals.html.")
 
 
 if __name__ == "__main__":
